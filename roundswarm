@@ -1,0 +1,14 @@
+#!/bin/bash
+TIMEFORMAT=%R
+allThreads=`seq 0 $(( $(grep proc /proc/cpuinfo -c) - 1 ))`
+for t in ${allThreads[@]}; do
+        echo "$t " > swarm.txt && { time timeout 0.017 taskset -c $t ps -o cpuid,comm,args ; } 2>> swarm.txt 
+        sed -ie '/ps/d' swarm.txt && sed -i ':a;N;$!ba;s/\n//g' swarm.txt
+        cat swarm.txt > swarm2.txt && rm swarm.txt
+done
+sort -k 2,2 swarm2.txt > swarm3.txt
+for s in $(cat swarm3.txt | awk '{ print $1 }'); do
+        echo "$s " > swarm.txt && { time timeout 0.017 taskset -c $s ps -o cpuid,comm,args ; } 2>> swarm.txt
+        sed -ie '/ps/d' swarm.txt && sed -i ':a;N;$!ba;s/\n//g' swarm.txt
+done
+cat swarm.txt
