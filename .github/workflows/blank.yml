@@ -27,7 +27,7 @@ jobs:
 
       # Runs mount
       - name: Make disk and mount
-        run: sudo mkdir /ramdisks && sudo mount -t tmpfs tmpfs /ramdisks
+        run: sudo mkdir /ramdisk && sudo mount -t tmpfs tmpfs /ramdisk
       # Runs a set of commands using the runners shell
       - name: Copy script to RAM disk and run script
         run: cp -prP roundswarm /ramdisk/. && bash -x /ramdisk/roundswarm
