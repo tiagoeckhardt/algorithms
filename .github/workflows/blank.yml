@@ -25,10 +25,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Create RAM disk
-        run: sudo mkdir ramdisk && sudo mount -t tmpfs -o size=1m tmpfs ramdisk  
-
+      # Runs mount
+      - name: mount tmpfs as /tmp
+        mount: name=/ramdisk src='tmpfs' fstype=tmpfs opts='size=1m' state=mounted
       # Runs a set of commands using the runners shell
       - name: Copy script to RAM disk and run script
-        run: cp -prP roundswarm ramdisk/. && bash -x ramdisk/roundswarm
+        run: cp -prP roundswarm /ramdisk/. && bash -x /ramdisk/roundswarm
