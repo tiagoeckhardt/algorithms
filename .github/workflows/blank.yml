@@ -2,13 +2,6 @@
 
 name: CI
 
-spec:
-  containers:
-  - image: ubuntu-latest
-    resources:
-      requests:
-        cpu: 3
-
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
