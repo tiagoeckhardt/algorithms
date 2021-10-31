@@ -13,7 +13,7 @@ cat swarm3.txt | while IFS= read -r line; do
         s=$(echo $line| awk -F "" '{print $1}')   # Select core
         echo "$line " >> swarm.txt && { time timeout 0.007 taskset -c $s ps -o cpuid,comm,args ; } 2>> swarm.txt # Test response time
         echo " $?" >> swarm.txt
-        sed -ie '/ps/d' swarm.txt && sed -i ':a;N;$!ba;s/\n//g' swarm.txt
+        sed -ie '/ps/d' swarm.txt && sed -i ':a;N;$!ba;s/\n//g' swarm.txt # Output parsing
         cat swarm.txt >> swarm5.txt && rm swarm.txt
 done
 cat swarm5.txt #  Display results
