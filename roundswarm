@@ -2,7 +2,7 @@
 TIMEFORMAT=%R                           # Change output from time command to get only the value real
 allThreads=`seq 0 $(( $(grep proc /proc/cpuinfo -c) - 1 ))` # Get sequencial number of cores
 for t in ${allThreads[@]}; do
-        echo "$t " >> swarm.txt && { time timeout 0.008 taskset -c $t ps -o cpuid,comm,args ; } 2>> swarm.txt 
+        echo "$t " >> swarm.txt && { time timeout 0.007 taskset -c $t ps -o cpuid,comm,args ; } 2>> swarm.txt 
         echo " $?" >> swarm.txt # Get to know if command was done
         sed -ie '/ps/d' swarm.txt && sed -i ':a;N;$!ba;s/\n//g' swarm.txt # Remove bug msg and new lines
         cat swarm.txt >> swarm2.txt && rm swarm.txt # save outputs
@@ -11,7 +11,7 @@ sort -k 2,2 swarm2.txt > swarm3.txt && rm swarm2.txt # sort the time from the fa
 cat swarm3.txt
 cat swarm3.txt | while IFS= read -r line; do     
         s=$(echo $line| awk -F "" '{print $1}')   # Select core
-        echo "$line " >> swarm.txt && { time timeout 0.008 taskset -c $s ps -o cpuid,comm,args ; } 2>> swarm.txt # Test response time
+        echo "$line " >> swarm.txt && { time timeout 0.007 taskset -c $s ps -o cpuid,comm,args ; } 2>> swarm.txt # Test response time
         echo " $?" >> swarm.txt # Get result of operation
         sed -ie '/ps/d' swarm.txt && sed -i ':a;N;$!ba;s/\n//g' swarm.txt # Output parsing
         cat swarm.txt >> swarm5.txt && rm swarm.txt # save outputs
