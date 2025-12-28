@@ -1,0 +1,8 @@
+t=0.001
+while true; do
+    out=$(timeout "$t" ps -o cpuid,comm,args 2>/dev/null)
+
+    [[ "$out" != "124" ]] && break
+
+    t=$(printf "%.3f" "$(echo "$t + 0.001" | bc)")
+done
